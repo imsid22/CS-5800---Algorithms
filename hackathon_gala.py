@@ -51,26 +51,25 @@ def createNetwork(N, M, Teams, Tables):
     
     total_nodes = N + M + 2
     total_teams = len(Teams)
-    network = [[0]*total_nodes for _ in range(total_nodes)]
-    
+    total_tables = len(Tables)
+    network = [[0] * total_nodes for _ in range(total_nodes)]
+
     # Creating the edges from the source node
-    counter = 0
-    for idx in range(1, total_teams+1):
-        network[0][idx] = Teams[counter]
-        counter += 1
+    network[0][1:total_teams + 1] = Teams
 
     # Creating the edges from the teams to the tables
-    for team_idx in range(1, total_teams+1):
-        for idx in range(total_teams+1, total_nodes-1):
-            network[team_idx][idx] = 1
+    team_to_table_edge = [1]*total_tables
+    for team_idx in range(1, total_teams + 1):
+        network[team_idx][total_teams + 1:total_nodes - 1] = team_to_table_edge
 
     # Creating the edges from the tables to the target node
     counter = 0
-    for table_idx in range(total_teams+1, total_nodes-1):
+    for table_idx in range(total_teams + 1, total_nodes - 1):
         network[table_idx][-1] = Tables[counter]
         counter += 1
 
     return network
+
 
 if __name__ == "__main__":    
     parameter_list = []
